@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P3R Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Light theme variables */
+            --bg-color: #f9f7fe;
+            --text-color: #333344;
+            --primary-color: #6c63ff;
+            --secondary-color: #4a44c6;
+            --accent-color: #ff6b8b;
+            --card-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --footer-bg: #333344;
+            --footer-text: #f9f7fe;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --gradient: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
+            --gradient-accent: linear-gradient(135deg, #ff6b8b 0%, #ff8e53 100%);
+        }
+
+        /* Dark theme variables */
+        .dark-theme {
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --primary-color: #7c73ff;
+            --secondary-color: #5a54d6;
+            --accent-color: #ff7b9c;
+            --card-bg: #1e1e2e;
+            --header-bg: rgba(30, 30, 46, 0.95);
+            --footer-bg: #0a0a0f;
+            --footer-text: #d0d0e0;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --gradient: linear-gradient(135deg, #7c73ff 0%, #5a54d6 100%);
+            --gradient-accent: linear-gradient(135deg, #ff7b9c 0%, #ff9a63 100%);
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.5s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 107, 139, 0.05) 0%, transparent 20%);
+            overflow-x: hidden;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            animation: pulse 3s infinite;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Header styles */
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px var(--shadow);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        nav a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Main content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section styling */
+        section {
+            margin: 4rem 0;
+            padding: 2.5rem;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        section:nth-child(even)::before {
+            background: var(--gradient-accent);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: inline-block;
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* About section */
+        #about p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        /* Skills section */
+        #skills ul {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        #skills li {
+            padding: 1.5rem;
+            background: rgba(108, 99, 255, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #skills li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.15);
+        }
+
+        /* Projects section */
+        #projects ul {
+            list-style: none;
+        }
+
+        #projects li {
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            background: rgba(255, 107, 139, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(108, 99, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #projects li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        #projects h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.8rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #projects h3::before {
+            content: '🚀';
+            font-size: 1.2rem;
+        }
+
+        #projects p {
+            line-height: 1.7;
+        }
+
+        /* Contact section */
+        #contact a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 2px;
+        }
+
+        #contact a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        #contact a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .contact-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-icons a:hover {
+            transform: translateY(-5px) rotate(10deg);
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Scroll animations */
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            nav ul {
+                gap: 0.8rem;
+            }
+            
+            section {
+                padding: 1.5rem;
+                margin: 2.5rem 0;
+            }
+            
+            #skills ul {
+                grid-template-columns: 1fr;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* Interactive cursor effect */
+        .cursor-effect {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(108, 99, 255, 0.3);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        /* Loading animation */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient);
+            width: 0%;
+            z-index: 1001;
+            animation: loading 1.5s ease-in-out;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading animation -->
+    <div class="loading-bar"></div>
+    
+    <!-- Custom cursor effect -->
+    <div class="cursor-effect"></div>
+    
+    <!-- Theme toggle button -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <header>
+        <h1>Rudru Swamy M M</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Welcome to my portfolio! I am a 3rd year CSE student @JNNCE, Shivamogga. Aspiring to build a career in Software Development in domains like Web Development, AI/ML, Cybersecurity, and Blockchain. I'm passionate about creating innovative solutions to real-world problems using cutting-edge technologies.</p>
+        </section>
+        
+        <section id="skills">
+            <h2>Skills</h2>
+            <ul>
+                <li><strong>Programming Languages:</strong> C, Python, Java, JavaScript</li>
+                <li><strong>Web Development:</strong> HTML, CSS, React.js, Node.js</li>
+                <li><strong>Databases:</strong> MySQL, MongoDB</li>
+                <li><strong>Tools & Technologies:</strong> Git, VS Code, LaTeX, Docker, AWS</li>
+                <li><strong>Frameworks & Libraries:</strong> Express.js, TensorFlow, PyTorch</li>
+                <li><strong>Soft Skills:</strong> Problem-solving, Team Collaboration, Agile Methodology</li>
+            </ul>
+        </section>
+        
+        <section id="projects">
+            <h2>Projects</h2>
+            <ul>
+                <li>
+                    <h3>WhatIfWorld : Powered by AI</h3>
+                    <p>It is a web application providing AI driven answers for hypothetical questions on domains like "Education, Technology, Society, Environment, etc". An inbuilt AI model "Cerabras-Llama-3.3-70B" optimizes answers and validates in pre-defined format displaying "Domain, Probability, Key implications, Potential challenges, Statistical impact overview with bar and donut chart".</p>
+                </li>
+                <li>
+                    <h3>Smart Medicine Reminder</h3>
+                    <p>It is an application focusing on alerting patients about medicines prescribed for them at regular intervals with details including "Time, dosage, etc" updated by the caretaker. The application comes with reminders as alarms, WhatsApp notifications with links. If the patient finishes medicines, they can update it in the application to notify the caretaker, otherwise the caretaker gets messages about missed doses.</p>
+                </li>
+                <li>
+                    <h3>BloomWatch</h3>
+                    <p>It is a project offering flower bloom status of a particular region using NASA's NDVI dataset by generating a token. If a user selects a particular location on a map, it identifies the location by altitudes according to NASA satellite coordinates. If users want to preserve data for further use, they can store it by uploading local pictures and adding notes.</p>
+                </li>
+            </ul>
+        </section>
+        
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <p><strong>Email:</strong> <a href="mailto:swamymoogi@gmail.com">swamymoogi@gmail.com/a></p>
+            <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/rudru-swamy-m-m-58532939a/">rudru-swamy-m-m-58532939a</a></p>
+            <p><strong>GitHub:</strong> <a href="https://github.com">github.com/RudruSwamyMM</a></p>
+            
+            <div class="contact-icons">
+                <a href="mailto:swamymoogi@gmail.com" title="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/rudru-swamy-m-m-58532939a/" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" title="Resume">
+                    <i class="fas fa-file-pdf"></i>
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 P3R Portfolio | All rights reserved</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Designed with attention-holding CSS and theme switching</p>
+    </footer>
+
+    <script>
+        // Theme switching functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme or prefer-color-scheme
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            document.body.classList.add('dark-theme');
+            themeIcon.className = 'fas fa-sun';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            }
+            
+            // Add click animation
+            themeToggle.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                themeToggle.style.transform = '';
+            }, 200);
+        });
+        
+        // Scroll animations for sections
+        const sections = document.querySelectorAll('section');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Custom cursor effect
+        const cursor = document.querySelector('.cursor-effect');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        document.addEventListener('mousedown', () => {
+            cursor.style.width = '30px';
+            cursor.style.height = '30px';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Add active state to clicked link
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.style.color = '';
+                });
+                this.style.color = 'var(--primary-color)';
+            });
+        });
+        
+        // Loading animation completion
+        window.addEventListener('load', () => {
+            const loadingBar = document.querySelector('.loading-bar');
+            setTimeout(() => {
+                loadingBar.style.opacity = '0';
+                setTimeout(() => {
+                    loadingBar.remove();
+                }, 500);
+            }, 1500);
+        });
+        
+        // Add hover effect to project items
+        const projectItems = document.querySelectorAll('#projects li');
+        projectItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // Animate skills on hover
+        const skillItems = document.querySelectorAll('#skills li');
+        skillItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                const allSkills = document.querySelectorAll('#skills li');
+                allSkills.forEach(skill => {
+                    if (skill !== this) {
+                        skill.style.opacity = '0.7';
+                        skill.style.transform = 'scale(0.98)';
+                    }
+                });
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                const allSkills = document.querySelectorAll('#skills li');
+                allSkills.forEach(skill => {
+                    skill.style.opacity = '1';
+                    skill.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
